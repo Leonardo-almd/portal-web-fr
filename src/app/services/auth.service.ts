@@ -4,12 +4,14 @@ import { BehaviorSubject, first, firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from "jwt-decode";
 import { PoNotificationService } from '@po-ui/ng-components';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   public user$ = new BehaviorSubject<boolean>(false);
+  private baseUrl = environment.baseUrl;
 
   constructor(
     private router: Router,
@@ -26,7 +28,7 @@ export class AuthService {
 
   // recoverPassword(email: string): Promise<any> {
   //     const body = { email };
-  //     const result = this.http.post('http://localhost:3000/auth/recovery-password', body)
+  //     const result = this.http.post(`${this.baseUrl}/auth/recovery-password`, body)
   //     return firstValueFrom(result)
   // }
 
@@ -46,7 +48,7 @@ export class AuthService {
     try {
       const body = { email, password };
       this.http
-        .post('http://localhost:3000/auth/login', body)
+        .post(`${this.baseUrl}/auth/login`, body)
         .subscribe({
           next: (res: any) => {
             console.log(res)

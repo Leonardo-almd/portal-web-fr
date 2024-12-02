@@ -2,41 +2,43 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PoComboFilter } from '@po-ui/ng-components';
 import { Observable, firstValueFrom, map } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BranchService implements PoComboFilter {
+  private baseUrl = environment.baseUrl;
   constructor( private http: HttpClient) {}
 
   getFilteredData(params: any): Observable<any> {
     const value = params.value;
     return this.http
-      .get<any[]>('http://localhost:3000/branch/quicksearch', {
+      .get<any[]>(`${this.baseUrl}/branch/quicksearch`, {
         params: {value}
       });
   }
 
   getObjectByValue(value: string): Observable<any> {
     return this.http
-      .get<any>(`http://localhost:3000/branch/quicksearch/${value}`);
+      .get<any>(`${this.baseUrl}/branch/quicksearch/${value}`);
   }
 
   get(filter: any) {
     filter = new HttpParams({
       fromObject: filter,
     });
-    const result = this.http.get(`http://localhost:3000/branch?${filter}`)
+    const result = this.http.get(`${this.baseUrl}/branch?${filter}`)
     return result
   }
 
   delete(id: string): Promise<any> {
-    const result = this.http.delete(`http://localhost:3000/branch/${id}`)
+    const result = this.http.delete(`${this.baseUrl}/branch/${id}`)
     return firstValueFrom(result)
   }
 
   create(payload: any): Promise<any> {
-    const result = this.http.post(`http://localhost:3000/branch`, payload)
+    const result = this.http.post(`${this.baseUrl}/branch`, payload)
     return firstValueFrom(result)
   }
 

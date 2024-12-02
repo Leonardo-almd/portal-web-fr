@@ -1,11 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvoiceService {
+  private baseUrl = environment.baseUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -13,22 +15,22 @@ export class InvoiceService {
     filter = new HttpParams({
       fromObject: filter,
     });
-    const result = this.http.get(`http://localhost:3000/invoices?${filter}`)
+    const result = this.http.get(`${this.baseUrl}/invoices?${filter}`)
     return result
   }
 
   createInvoice(payload: any){
-    return this.http.post('http://localhost:3000/invoices', payload)
+    return this.http.post(`${this.baseUrl}/invoices`, payload)
   }
 
   exportInvoice(id: any){
-    return this.http.get(`http://localhost:3000/invoices/${id}/export`, {
+    return this.http.get(`${this.baseUrl}/invoices/${id}/export`, {
       responseType: 'blob' as 'json'
     })
   }
 
   delete(id: string): Promise<any> {
-    const result = this.http.delete(`http://localhost:3000/invoices/${id}`)
+    const result = this.http.delete(`${this.baseUrl}/invoices/${id}`)
     return firstValueFrom(result)
   }
 }
