@@ -1,0 +1,26 @@
+<po-modal p-click-out="false" p-size="sm" p-title="Novo Usuário" [p-primary-action]="primaryAction"
+  [p-secondary-action]="secundaryAction">
+  <form [formGroup]="form">
+    <div class="po-row">
+      <po-input class="po-md-9" p-label="Nome" p-icon="po-icon po-icon-user" p-placeholder="Digite um nome"
+        formControlName="name"></po-input>
+    </div>
+    <div class="po-row">
+      <po-input class="po-md-9" p-label="Email" p-icon="po-icon po-icon-mail" p-placeholder="Digite um email"
+        formControlName="email"></po-input>
+    </div>
+    @if(!form.get('id')?.value){
+      <div class="po-row">
+        <po-password class="po-md-9" p-label="Senha" p-icon="po-icon po-icon-lock" p-placeholder="Crie uma senha"
+          formControlName="password"
+          p-error-pattern="A senha deve ter pelo menos 6 caracteres, incluir pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial.">
+        </po-password>
+      </div>
+    }
+    <div class="po-row">
+      <po-switch class="po-md-9" p-label="Administrador" p-icon="po-icon po-icon-role"
+        formControlName="is_admin" p-label-off="Desabilitado" p-label-on="Habilitado"></po-switch>
+    </div>
+  </form>
+
+</po-modal>

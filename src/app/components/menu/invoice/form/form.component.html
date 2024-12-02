@@ -1,0 +1,33 @@
+<po-modal p-click-out="false" p-title="Nova Invoice" [p-primary-action]="primaryAction"
+  [p-secondary-action]="secundaryAction">
+  <form [formGroup]="form">
+    <po-stepper >
+      <!--  [p-can-active-next-step]="canActiveNextStep.bind(this)" -->
+      <po-step p-label="Dados" style="margin-bottom: 100px;" [p-can-active-next-step]="canActiveNextStep.bind(this)">
+        <div class="po-row">
+          <po-combo class="po-md-6" p-label="Filial" p-placeholder="- selecione -" [p-filter-service]="branchService"
+            formControlName="branch"></po-combo>
+          <po-datepicker class="po-md-6" p-label="Data" p-placeholder="Data da Invoice" formControlName="date">
+          </po-datepicker>
+          <po-input
+              p-label="teste">
+          </po-input>>
+        </div>
+
+      </po-step>
+      <po-step p-label="Anexo">
+        <div class="po-row" style="display: flex; flex-direction: row; justify-content: center;">
+          <po-button (p-click)="fileInput.click()" p-label="Anexar Arquivo" style="margin-top: 30px;"></po-button>
+          <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept=".xlsx" />
+        </div>
+        @if(fileUpload){
+        <div class="po-row" style="display: flex; flex-direction: row; justify-content: center;">
+          <po-info p-label="Arquivo anexado" [p-value]="fileUpload.name + ' - ' + (fileUpload.size/1048576 | number: '1.2-2') + ' MB'"> </po-info>
+        </div>
+
+        }
+      </po-step>
+    </po-stepper>
+  </form>
+
+</po-modal>

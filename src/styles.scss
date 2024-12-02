@@ -1,0 +1,35 @@
+po-logo{
+  img{
+    max-width: 400px !important;
+    max-height: none !important;
+    position: relative !important;
+  }
+}
+po-page-login{
+  width: 100% !important;
+  height: 100% !important;
+}
+
+
+:root {
+  --color-brand-01-lightest: #e6f2ff; // Tonalidade mais clara
+  --color-brand-01-lighter: #b3d7ff; // Tonalidade mais clara
+  --color-brand-01-light: #80bbff; // Tonalidade mais clara
+  --color-brand-01-base: #007bff; // Cor primária
+  --color-brand-01-dark: #005bb3; // Tonalidade mais escura
+  --color-brand-01-darker: #003d7f; // Tonalidade mais escura
+  --color-brand-01-darkest: #002040; // Tonalidade mais escura
+  --color-brand-02-base: #ff7b00;
+  --color-brand-03-base: #f0f0f0;
+  --color-neutral-dark-70: #4a5c60;
+  --color-neutral-dark-80: #2c3739;
+  --color-neutral-dark-90: #1d2426;
+  --color-neutral-dark-95: #0b0e0e;
+  --color-neutral-light-10: #eceeee;
+  --color-neutral-light-20: #dadedf;
+  --color-neutral-light-30: #b6bdbf;
+  --color-neutral-light-00: #fff;
+  --color-neutral-light-05: #fbfbfb;
+  --color-neutral-mid-40: #9da7a9;
+  --color-neutral-mid-60: #6e7c7f;
+}

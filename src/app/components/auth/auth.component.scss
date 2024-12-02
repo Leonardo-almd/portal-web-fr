@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.half {
+  height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column  ;
+  align-items: center;
+  justify-content: center;
+  /* Adicione estilos adicionais conforme necessário */
+}
+
+/* Para garantir que a imagem e o login estejam centralizados vertical e horizontalmente */
+.half img, .half po-page-login {
+  max-width: 100%;
+  height: auto;
+}
+
+#logo{
+  padding: 0px 20px;
+  background-color: #1A1819;
+}
+

@@ -1,0 +1,41 @@
+<po-page-dynamic-search
+(p-quick-search)="onSearch($event)"
+[p-actions]="pageActions"
+(p-change-disclaimers)="onSearch($event)"
+  p-title="Usuários">
+  @if(isLoading()){
+    <po-loading-overlay [p-screen-lock]="isLoading()" [hidden]="!isLoading()" p-text="Processando"></po-loading-overlay>
+  } @else {
+    <po-container [p-no-border]="true">
+    <div>
+<po-table
+  [p-columns]="tableColumns"
+  [p-actions]="tableActions"
+  [p-actions-right]="true"
+  [p-items]="tableItems()"
+  [p-hide-columns-manager]="true"
+  (p-show-more)="onShowMore()"
+  [p-show-more-disabled]="!hasNext()"
+  p-container="shadow"
+
+  >
+    <ng-template p-table-cell-template let-column="column" let-row="row">
+      @if(column.property === 'is_admin'){
+        <po-switch
+        (p-change)="onChangeStatus($event, row)"
+        [(ngModel)]="row[column.property]"
+        p-label-off="não"
+        p-label-on="sim"
+      >
+      </po-switch>
+      }
+    </ng-template>
+</po-table>
+    </div>
+
+
+
+    </po-container>
+  }
+
+</po-page-dynamic-search>
