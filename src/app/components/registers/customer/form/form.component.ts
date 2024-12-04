@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { PoFieldModule, PoModalAction, PoModalComponent, PoModalModule, PoNotificationService } from '@po-ui/ng-components';
 import { BranchService } from '../../../../services/branch.service';
 import { PoDividerModule } from '@po-ui/ng-components';
+import { CustomerService } from '../../../../services/customer.service';
 
 @Component({
   selector: 'app-form',
@@ -26,9 +27,9 @@ export class FormComponent {
       await this.service.create(payload).then(() => {
         this.poModal.close();
         this.callback();
-        this.poNotification.success('Filial salva com sucesso!');
+        this.poNotification.success('Cliente salva com sucesso!');
       }).catch(() => {
-        this.poNotification.error('Erro ao criar filial!');
+        this.poNotification.error('Erro ao criar cliente!');
       })
     },
     disabled: true
@@ -39,7 +40,7 @@ export class FormComponent {
     action: () => this.poModal.close(),
   };
 
-  constructor(private fb: FormBuilder, private service: BranchService, private poNotification: PoNotificationService){
+  constructor(private fb: FormBuilder, private service: CustomerService, private poNotification: PoNotificationService){
     this.form = this.fb.group({
       id: [null],
       name: ['', [Validators.required]],
@@ -51,6 +52,7 @@ export class FormComponent {
       city: ['', [Validators.required]],
       state: ['', [Validators.required]],
       zipcode: ['', [Validators.required]],
+      phone: [''],
     })
     this.form.valueChanges.subscribe((ev) => {
       this.primaryAction.disabled = this.form.invalid;

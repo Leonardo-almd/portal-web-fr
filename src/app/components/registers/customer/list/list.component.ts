@@ -13,7 +13,7 @@ import {
   PoPageAction} from '@po-ui/ng-components';
 import { PoPageDynamicSearchModule } from '@po-ui/ng-templates';
 import { FormsModule } from '@angular/forms';
-import { BranchService } from '../../../../services/branch.service';
+import { CustomerService } from '../../../../services/customer.service';
 
 @Component({
   selector: 'app-list',
@@ -43,7 +43,7 @@ export class ListComponent implements OnInit {
 
   public readonly pageActions: Array<PoPageAction> = [
     {
-      label: 'Criar Filial',
+      label: 'Criar Cliente',
       action: this.onCreate.bind(this),
       icon: 'ph ph-plus'
     }
@@ -73,7 +73,7 @@ export class ListComponent implements OnInit {
   ];
 
   constructor(
-    private service: BranchService,
+    private service: CustomerService,
     private poNotification: PoNotificationService,
     private poAlert: PoDialogService,
     private vcref: ViewContainerRef
@@ -103,7 +103,7 @@ export class ListComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.poNotification.error(`Erro ao buscar filiais: ${error}`);
+        this.poNotification.error(`Erro ao buscar clientes: ${error}`);
         this.isLoading.set(false);
       },
     });
@@ -120,17 +120,17 @@ export class ListComponent implements OnInit {
   async onDelete(user: any) {
     this.poAlert.confirm({
       literals: { cancel: 'Não', confirm: 'Sim' },
-      title: 'Excluir filial',
-      message: 'Deseja realmente excluir a filial?',
+      title: 'Excluir cliente',
+      message: 'Deseja realmente excluir a cliente?',
       confirm: async () => {
         await this.service
           .delete(user.id)
           .then(() => {
-            this.poNotification.success('Filial excluída com sucesso');
+            this.poNotification.success('Cliente excluído com sucesso');
             this.resetFilter();
           })
           .catch(() => {
-            this.poNotification.error('Erro ao excluir filial');
+            this.poNotification.error('Erro ao excluir cliente');
           });
       },
       cancel: () => undefined,

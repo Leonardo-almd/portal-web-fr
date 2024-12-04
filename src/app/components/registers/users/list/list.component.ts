@@ -1,3 +1,4 @@
+import { PermissionsComponent } from './../permissions/permissions.component';
 import { Component, ComponentFactoryResolver, OnInit, ViewContainerRef, signal } from '@angular/core';
 import {
   PoButtonModule,
@@ -51,7 +52,7 @@ export class ListComponent implements OnInit {
   ]
 
   public readonly tableColumns: Array<PoTableColumn> = [
-    { property: 'is_admin', label: 'Administrador', type: 'cellTemplate', width: '150px' },
+    { property: 'is_admin', label: 'Administrador', type: 'cellTemplate' },
     { property: 'id', label: 'ID', type: 'number' },
     { property: 'name', label: 'Nome', type: 'string' },
     { property: 'email', label: 'Email', type: 'string' }
@@ -73,6 +74,11 @@ export class ListComponent implements OnInit {
       icon: 'ph ph-lock-key',
       label: 'Resetar senha',
       action: this.onResetPassword.bind(this),
+    },
+    {
+      icon: 'ph ph-gear',
+      label: 'Permissões',
+      action: this.openPermissionsModal.bind(this)
     }
   ];
 
@@ -94,7 +100,6 @@ export class ListComponent implements OnInit {
     this.service.getUsers(this.filter()).subscribe({
       next: (res: any) => {
         if (res) {
-          console.log(this.filter())
           if(this.filter().page == 1){
             this.tableItems.set(res.data);
           } else {
@@ -107,7 +112,7 @@ export class ListComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.log(error);
+        console.error(error);
         this.poNotification.error(`Erro ao buscar usuários: ${error}`);
         this.isLoading.set(false);
       },
@@ -122,14 +127,14 @@ export class ListComponent implements OnInit {
     this.refreshUsers();
   }
 
-  onChangeStatus(event: any, user: any) {
-    console.log(event, user);
-    this.service
+  async onChangeStatus(event: any, user: any) {
+    await this.service
       .toggleUserRole(user.id, event)
       .then(() => {
         this.poNotification.success('Permissão alterada com sucesso');
       })
       .catch(() => {
+        user.is_admin = !event
         this.poNotification.error('Erro ao alterar permissão');
       });
   }
@@ -168,6 +173,13 @@ export class ListComponent implements OnInit {
     this.vcref.clear();
     const { ResetPasswordComponent } = await import('../reset-password/reset-password.component');
     const comp = this.vcref.createComponent(ResetPasswordComponent)
+    comp.instance.open(row.id)
+  }
+
+  async openPermissionsModal(row: any){
+    this.vcref.clear();
+    const { PermissionsComponent } = await import('../permissions/permissions.component');
+    const comp = this.vcref.createComponent(PermissionsComponent)
     comp.instance.open(row.id)
   }
 

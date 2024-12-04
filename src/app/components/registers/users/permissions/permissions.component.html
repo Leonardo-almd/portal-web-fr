@@ -1,0 +1,15 @@
+<po-modal p-click-out="false" p-size="sm" p-title="Permissões" [p-primary-action]="primaryAction"
+  [p-secondary-action]="secundaryAction">
+    <div class="po-row">
+      <div *ngFor="let permission of allPermissions" class="po-md-12">
+        <po-switch
+          [p-label]="permission.label"
+          [(ngModel)]="permission.enable"
+          name="permission-{{ permission.entity }}"
+          p-label-off="Desabilitado" p-label-on="Habilitado">
+        </po-switch>
+      </div>
+    </div>
+  <!-- </form> -->
+
+</po-modal>

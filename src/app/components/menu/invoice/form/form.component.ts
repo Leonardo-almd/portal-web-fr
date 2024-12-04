@@ -70,7 +70,6 @@ export class FormComponent {
         },
         error: err => {
           this.poNotification.error(`Erro ao criar invoice: ${err}`);
-          console.log(err)
         }
       })
     },
@@ -109,7 +108,6 @@ export class FormComponent {
   onUpload(event: any) {
     event.data = { test: 'test' };
     event.file.name = 'file.xlsx';
-    console.log(event);
   }
 
   onFileSelected(event: any) {
@@ -125,7 +123,6 @@ export class FormComponent {
       // this.http.post('http://localhost:3000/invoices/upload', formData,{
       //   headers: {Authorization: `Bearer ${localStorage.getItem('access_token')}`}
       // }).subscribe(
-      //   (response: any) => console.log('Upload success', response),
       //   (error: any) => console.error('Upload error', error)
       // );
     }

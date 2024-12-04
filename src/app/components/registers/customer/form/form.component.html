@@ -1,0 +1,29 @@
+<po-modal p-click-out="false" p-size="lg" p-title="Novo Cliente" [p-primary-action]="primaryAction"
+  [p-secondary-action]="secundaryAction">
+  <form [formGroup]="form">
+    <po-divider
+        p-label="Dados">
+    </po-divider>
+    <div class="po-row">
+      <po-input class="po-md-6" p-label="Nome" formControlName="name"></po-input>
+      <po-input class="po-md-6" p-label="CNPJ" formControlName="cgc"
+      p-mask="99.999.999/9999-99"
+      ></po-input>
+    </div>
+    <po-divider
+        p-label="Endereço">
+    </po-divider>
+    <div class="po-row">
+      <po-input class="po-md-3" p-label="CEP" formControlName="zipcode"
+      p-mask="99999-999"
+      ></po-input>
+      <po-input class="po-md-6" p-label="Logradouro" formControlName="address"></po-input>
+      <po-input class="po-md-4" p-label="Bairro" formControlName="neighborhood"></po-input>
+      <po-input class="po-md-3" p-label="Número" formControlName="number"></po-input>
+      <po-input class="po-md-3" p-label="Complemento" formControlName="complement"></po-input>
+      <po-input class="po-md-3" p-label="Cidade" formControlName="city"></po-input>
+      <po-input class="po-md-3" p-label="Estado" formControlName="state"></po-input>
+    </div>
+  </form>
+
+</po-modal>

@@ -1,0 +1,42 @@
+<po-page-dynamic-search
+(p-quick-search)="onSearch($event)"
+[p-actions]="pageActions"
+(p-change-disclaimers)="onSearch($event)"
+  p-title="Clientes">
+  @if(isLoading()){
+    <po-loading-overlay [p-screen-lock]="isLoading()" [hidden]="!isLoading()" p-text="Processando"></po-loading-overlay>
+  } @else {
+    <po-container [p-no-border]="true">
+    <div>
+<po-table
+  [p-columns]="tableColumns"
+  [p-actions]="tableActions"
+  [p-actions-right]="true"
+  [p-items]="tableItems()"
+  [p-hide-columns-manager]="true"
+  (p-show-more)="onShowMore()"
+  [p-show-more-disabled]="!hasNext()"
+  p-container="shadow"
+
+  >
+    <ng-template p-table-cell-template let-column="column" let-row="row">
+      @if(column.property === 'cgc'){
+        <span>{{formatCNPJ(row.cgc)}}</span>
+      }
+      @if(column.property === 'address'){
+        @if(row.complement){
+          <span>{{row.address}}, {{row.number}} - {{row.complement}}</span>
+        } @else {
+          <span>{{row.address}}, {{row.number}}</span>
+        }
+      }
+    </ng-template>
+</po-table>
+    </div>
+
+
+
+    </po-container>
+  }
+
+</po-page-dynamic-search>

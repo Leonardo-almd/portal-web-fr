@@ -67,7 +67,6 @@ export class ListComponent implements OnInit {
 
           error: (error) => {
             this.isLoading.set(false);
-            console.log(error);
             this.poNotification.error(`Erro ao exportar invoice: ${error}`);
           },
         });
@@ -99,7 +98,6 @@ export class ListComponent implements OnInit {
     this.service.getInvoices(this.filter()).subscribe({
       next: (res: any) => {
         if (res) {
-          console.log(res)
           if(this.filter().page == 1){
             this.tableItems.set(res.data);
           } else {
@@ -112,7 +110,7 @@ export class ListComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.log(error);
+        console.error(error);
         this.poNotification.error(`Erro ao buscar as invoices: ${error}`);
         this.isLoading.set(false);
       },

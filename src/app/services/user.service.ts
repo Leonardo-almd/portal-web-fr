@@ -18,15 +18,20 @@ export class UserService {
     return result
   }
 
-  async toggleUserRole(id: string, currentRole: boolean): Promise<void> {
-      const result = this.http.patch(`${this.baseUrl}/users/${id}/role`, {currentRole}).subscribe({
-        next: (data) => {
-          console.log(data)
-        }, error: (error) => {
-          console.log(error)
-        }
-      })
+  getPermissionsByUser(id: string) {
+    const result = this.http.get(`${this.baseUrl}/users/${id}/permissions`)
+    return result
   }
+
+  async toggleUserRole(id: string, currentRole: boolean): Promise<any> {
+      const result = this.http.patch(`${this.baseUrl}/users/${id}/role`, {currentRole})
+      return firstValueFrom(result)
+  }
+
+  async updatePermissions(id: string, permissions: any[]): Promise<any> {
+    const result = this.http.patch(`${this.baseUrl}/users/${id}/permissions`, {permissions})
+    return firstValueFrom(result)
+}
 
   deleteUser(id: string): Promise<any> {
     const result = this.http.delete(`${this.baseUrl}/users/${id}`)

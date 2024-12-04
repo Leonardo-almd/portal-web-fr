@@ -14,6 +14,7 @@ import {
 import { PoPageDynamicSearchModule } from '@po-ui/ng-templates';
 import { FormsModule } from '@angular/forms';
 import { BranchService } from '../../../../services/branch.service';
+import { ProcessService } from '../../../../services/process.service';
 
 @Component({
   selector: 'app-list',
@@ -43,18 +44,20 @@ export class ListComponent implements OnInit {
 
   public readonly pageActions: Array<PoPageAction> = [
     {
-      label: 'Criar Filial',
+      label: 'Criar Processo',
       action: this.onCreate.bind(this),
       icon: 'ph ph-plus'
     }
   ]
 
   public readonly tableColumns: Array<PoTableColumn> = [
-    // { property: 'is_admin', label: 'Administrador', type: 'cellTemplate', width: '150px' },
     { property: 'id', label: 'ID', type: 'number' },
-    { property: 'name', label: 'Nome', type: 'string' },
-    { property: 'cgc', label: 'CNPJ', type: 'cellTemplate' },
-    { property: 'address', label: 'Endereço', type: 'cellTemplate' },
+    { property: 'name', label: 'Processo', type: 'string' },
+    { property: 'importer', label: 'Importador', type: 'string' },
+    { property: 'exporter', label: 'Exportador', type: 'string' },
+    { property: 'bl', label: 'BL', type: 'string' },
+    { property: 'originHarbor', label: 'Porto de Origem', type: 'string' },
+    { property: 'destinationHarbor', label: 'Porto de Destino', type: 'string' },
   ];
 
   public readonly tableActions: Array<PoTableAction> = [
@@ -73,7 +76,7 @@ export class ListComponent implements OnInit {
   ];
 
   constructor(
-    private service: BranchService,
+    private service: ProcessService,
     private poNotification: PoNotificationService,
     private poAlert: PoDialogService,
     private vcref: ViewContainerRef
@@ -103,7 +106,7 @@ export class ListComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.poNotification.error(`Erro ao buscar filiais: ${error}`);
+        this.poNotification.error(`Erro ao buscar processos: ${error}`);
         this.isLoading.set(false);
       },
     });
@@ -120,17 +123,17 @@ export class ListComponent implements OnInit {
   async onDelete(user: any) {
     this.poAlert.confirm({
       literals: { cancel: 'Não', confirm: 'Sim' },
-      title: 'Excluir filial',
-      message: 'Deseja realmente excluir a filial?',
+      title: 'Excluir processo',
+      message: 'Deseja realmente excluir o processo?',
       confirm: async () => {
         await this.service
           .delete(user.id)
           .then(() => {
-            this.poNotification.success('Filial excluída com sucesso');
+            this.poNotification.success('Processo excluído com sucesso');
             this.resetFilter();
           })
           .catch(() => {
-            this.poNotification.error('Erro ao excluir filial');
+            this.poNotification.error('Erro ao excluir processo');
           });
       },
       cancel: () => undefined,

@@ -32,9 +32,12 @@ export class AppComponent {
   constructor(public authService: AuthService, private router: Router, private poAlert: PoDialogService){}
   readonly menus: Array<PoMenuItem> = [
     { label: 'Invoices', icon: 'ph ph-files', shortLabel: 'Invoices', link: '/menu/invoice' },
+    { label: 'Frete Internacional', icon: 'ph ph-shipping-container', shortLabel: 'Frete', link: '/menu/international-shipping' },
     { label: 'Cadastros', icon: 'ph ph-database', shortLabel: 'Cadastros', subItems: [
       { label: 'Usuários', shortLabel: 'Usuários', link: '/register/user' },
       { label: 'Filiais', shortLabel: 'Filiais', link: '/register/branch' },
+      { label: 'Processos', shortLabel: 'Processos', link: '/register/process'},
+      { label: 'Clientes', shortLabel: 'Clientes', link: '/register/customer'}
     ] },
     { label: 'Sair', icon: 'ph ph-sign-out', shortLabel: 'Sair', action: () => this.logout()}
   ];

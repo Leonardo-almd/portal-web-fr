@@ -1,0 +1,17 @@
+<po-modal p-click-out="false" p-size="lg" p-title="Novo Processo" [p-primary-action]="primaryAction"
+  [p-secondary-action]="secundaryAction">
+  <form [formGroup]="form">
+    <po-divider
+        p-label="Dados">
+    </po-divider>
+    <div class="po-row">
+      <po-input class="po-md-6" p-label="Nome" formControlName="name"></po-input>
+      <po-input class="po-md-6" p-label="Importador" formControlName="importer"></po-input>
+      <po-input class="po-md-6" p-label="Exportador" formControlName="exporter"></po-input>
+      <po-input class="po-md-6" p-label="BL" formControlName="bl"></po-input>
+      <po-input class="po-md-6" p-label="Porto de Destino" formControlName="destinationHarbor"></po-input>
+      <po-input class="po-md-6" p-label="Porto de Origem" formControlName="originHarbor"></po-input>
+    </div>
+  </form>
+
+</po-modal>

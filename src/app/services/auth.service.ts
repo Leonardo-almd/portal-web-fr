@@ -51,10 +51,8 @@ export class AuthService {
         .post(`${this.baseUrl}/auth/login`, body)
         .subscribe({
           next: (res: any) => {
-            console.log(res)
             this.user$.next(true);
             localStorage.setItem('access_token', res.access_token)
-            console.log(JSON.stringify(res.user))
             localStorage.setItem('user', JSON.stringify(res.user))
             this.router.navigate(['/menu/invoice']);
           },

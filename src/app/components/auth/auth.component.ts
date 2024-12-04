@@ -24,7 +24,6 @@ export class AuthComponent {
   }
 
   // onSubmitRecover(event: {email: string}){
-  //   console.log(event);
   //   this.service.recoverPassword(event.email).then(() => {
   //     this.poNotification.success('Email enviado com sucesso!');
   //   }
