@@ -1,0 +1,87 @@
+<po-modal p-click-out="false" p-title="Novo Frete Internacional" [p-primary-action]="primaryAction"
+  [p-secondary-action]="secundaryAction">
+  <form [formGroup]="form">
+    <po-divider p-label="Dados"></po-divider>
+    <div class="po-row">
+      <po-combo class="po-md-6" p-label="Filial" p-placeholder="- selecione -" [p-filter-service]="branchService"
+        formControlName="branch"></po-combo>
+      <po-combo class="po-md-6" p-label="Cliente" p-placeholder="- selecione -" [p-filter-service]="customerService"
+        formControlName="customer"></po-combo>
+      <po-combo class="po-md-6" p-label="Processo" p-placeholder="- selecione -" [p-filter-service]="processService"
+        formControlName="process"></po-combo>
+      <po-input class="po-md-6" p-label="Frete" p-placeholder="Tipo de Frete" formControlName="freight_type">
+      </po-input>
+      <po-input class="po-md-6" p-label="Navio" p-placeholder="Nome do Navio" formControlName="ship_name">
+      </po-input>
+      <po-input class="po-md-6" p-label="Viagem" p-placeholder="Código da Viagem" formControlName="voyage_number">
+      </po-input>
+      <po-input class="po-md-6" p-label="Container" p-placeholder="Nome do Container" formControlName="container">
+      </po-input>
+      <po-datepicker class="po-md-6" p-label="Data Saída" p-placeholder="Data de Saída"
+        formControlName="departure_date">
+      </po-datepicker>
+      <po-datepicker class="po-md-6" p-label="Data Atracação" p-placeholder="Data de Atracação"
+        formControlName="arrival_date">
+      </po-datepicker>
+      <po-datepicker class="po-md-6" p-label="Data Devolução" p-placeholder="Data Limite para Devolução"
+        formControlName="return_deadline">
+      </po-datepicker>
+    </div>
+  </form>
+    <po-divider p-label="Taxas do Frete"></po-divider>
+    @if(freightCharges.controls.length>0){
+      <po-table
+      [p-columns]="columns"
+      [p-actions]="tableActions"
+      [p-items]="freightCharges.controls"
+      p-container="shadow"
+      [p-striped]="true"
+      [p-actions-right]="true"
+      [p-hide-columns-manager]="true"
+    >
+      <ng-template p-table-cell-template let-column="column" let-row="row" >
+        @if(column.property === 'description'){
+          <po-input
+            p-placeholder="Descrição"
+            [ngModel]="row.get('description').value"
+            (ngModelChange)="row.get('description').setValue($event)"
+          ></po-input>
+        }
+        @if(column.property === 'amount'){
+          <po-decimal
+            p-placeholder="Valor"
+            [ngModel]="row.get('amount').value"
+            (ngModelChange)="row.get('amount').setValue($event)"
+          ></po-decimal>
+        }
+        @if(column.property === 'currency'){
+          <po-select
+            p-placeholder="Moeda"
+            [ngModel]="row.get('currency').value"
+            (ngModelChange)="row.get('currency').setValue($event)"
+            [p-options]="[{
+              label: 'BRL', value: 'BRL'
+            }, {label: 'USD', value: 'USD'}]"
+          ></po-select>
+        }
+        @if(column.property === 'currency_rate'){
+          <po-decimal
+            p-placeholder="Taxa de Câmbio"
+            [ngModel]="row.get('currency_rate').value"
+            (ngModelChange)="row.get('currency_rate').setValue($event)"
+          ></po-decimal>
+        }
+        @if(column.property === 'amount_brl'){
+          <po-decimal
+            p-placeholder="Valor em Real"
+            p-disabled="true"
+            [ngModel]="row.get('currency_rate').value*row.get('amount').value"
+          ></po-decimal>
+        }
+      </ng-template>
+    </po-table>
+    }
+    <div class="po-row" style="display: flex; justify-content: center; padding: 20px;">
+      <po-button p-label="Adicionar Taxa" p-type="primary" (p-click)="addFreightCharge()"></po-button>
+    </div>
+</po-modal>

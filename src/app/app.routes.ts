@@ -3,6 +3,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { authGuard } from './guards/auth.guard';
 import { ListComponent } from './components/registers/users/list/list.component';
 import { ListComponent as InvoiceListComponent } from './components/menu/invoice/list/list.component';
+import { ListComponent as InternationalShippingListComponent } from './components/menu/international-shipping/list/list.component';
 import { ListComponent as BranchListComponent } from './components/registers/branches/list/list.component';
 import { ListComponent as ProcessListComponent } from './components/registers/process/list/list.component';
 import { ListComponent as CustomerListComponent } from './components/registers/customer/list/list.component';
@@ -15,7 +16,8 @@ export const routes: Routes = [
     path: 'menu',
     canActivate: [authGuard],
     children: [
-      { path: 'invoice', component: InvoiceListComponent, canActivate: [], data: { entity: 'invoice' }},
+      { path: 'invoice', component: InvoiceListComponent, canActivate: [permissionGuard], data: { entity: 'invoice' }},
+      { path: 'international-shipping', component: InternationalShippingListComponent, canActivate: [permissionGuard], data: { entity: 'international-shipping' }},
     ]
   },
   {
@@ -31,5 +33,5 @@ export const routes: Routes = [
   {
       path: 'access-denied', component: AccessDeniedComponent
   },
-  { path: '**', redirectTo: '/register/user' }
+  { path: '**', redirectTo: '/menu/invoice' }
 ];
