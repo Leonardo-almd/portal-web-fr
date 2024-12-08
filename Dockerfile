@@ -26,7 +26,7 @@ FROM nginx:latest
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy the build output to replace the default nginx contents.
-COPY --from=build /app/dist/portal-web-fr/browser /usr/share/nginx/html
+COPY --from=build /dist/portal-web-fr/browser /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
