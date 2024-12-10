@@ -11,7 +11,7 @@ import { permissionGuard } from './guards/permission.guard';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 
 export const routes: Routes = [
-  { path: 'auth', component: AuthComponent },
+  { path: 'auth', component: AuthComponent, canActivate: [authGuard] },
   {
     path: 'menu',
     canActivate: [authGuard],
