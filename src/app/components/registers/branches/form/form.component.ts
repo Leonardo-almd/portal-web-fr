@@ -51,6 +51,9 @@ export class FormComponent {
       city: ['', [Validators.required]],
       state: ['', [Validators.required]],
       zipcode: ['', [Validators.required]],
+      phone: [''],
+      email: ['', [Validators.email]],
+      site: ['']
     })
     this.form.valueChanges.subscribe((ev) => {
       this.primaryAction.disabled = this.form.invalid;

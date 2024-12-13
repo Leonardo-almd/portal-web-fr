@@ -4,27 +4,39 @@
     <po-divider p-label="Dados"></po-divider>
     <div class="po-row">
       <po-combo class="po-md-6" p-label="Filial" p-placeholder="- selecione -" [p-filter-service]="branchService"
-        formControlName="branch"></po-combo>
+        formControlName="branch" [p-clean]="true"></po-combo>
       <po-combo class="po-md-6" p-label="Cliente" p-placeholder="- selecione -" [p-filter-service]="customerService"
-        formControlName="customer"></po-combo>
+        formControlName="customer" [p-clean]="true"></po-combo>
       <po-combo class="po-md-6" p-label="Processo" p-placeholder="- selecione -" [p-filter-service]="processService"
-        formControlName="process"></po-combo>
+        formControlName="process" [p-clean]="true"></po-combo>
       <po-input class="po-md-6" p-label="Frete" p-placeholder="Tipo de Frete" formControlName="freight_type">
       </po-input>
-      <po-input class="po-md-6" p-label="Navio" p-placeholder="Nome do Navio" formControlName="ship_name">
+      <po-input class="po-md-4" p-label="Navio" p-placeholder="Nome do Navio" formControlName="ship_name">
       </po-input>
-      <po-input class="po-md-6" p-label="Viagem" p-placeholder="Código da Viagem" formControlName="voyage_number">
+      <po-input class="po-md-4" p-label="Viagem" p-placeholder="Código da Viagem" formControlName="voyage_number">
+      </po-input>
+      <po-input class="po-md-4" p-label="Fatura" p-placeholder="Nome/Número da Fatura" formControlName="invoice_name"
+      [p-upper-case]="true">
       </po-input>
       <po-input class="po-md-6" p-label="Container" p-placeholder="Nome do Container" formControlName="container">
       </po-input>
-      <po-datepicker class="po-md-6" p-label="Data Saída" p-placeholder="Data de Saída"
+      <po-select class="po-md-2" p-label="Moeda Demurrage" formControlName="demurrage_currency" [p-options]="[{
+        label: 'BRL', value: 'BRL'
+      }, {label: 'USD', value: 'USD'
+      }]"></po-select>
+      <po-decimal class="po-md-4" p-label="Valor Diária Demurrage" p-placeholder="Valor da Diária Demurrage" formControlName="demurrage_fee">
+      </po-decimal>
+      <po-datepicker class="po-md-3" p-label="Data Saída" p-placeholder="Data de Saída"
         formControlName="departure_date">
       </po-datepicker>
-      <po-datepicker class="po-md-6" p-label="Data Atracação" p-placeholder="Data de Atracação"
+      <po-datepicker class="po-md-3" p-label="Data Atracação" p-placeholder="Data de Atracação"
         formControlName="arrival_date">
       </po-datepicker>
-      <po-datepicker class="po-md-6" p-label="Data Devolução" p-placeholder="Data Limite para Devolução"
+      <po-datepicker class="po-md-3" p-label="Data Devolução" p-placeholder="Data Limite para Devolução"
         formControlName="return_deadline">
+      </po-datepicker>
+      <po-datepicker class="po-md-3" p-label="Data Vencimento" p-placeholder="Data de Vencimento"
+        formControlName="due_date">
       </po-datepicker>
     </div>
   </form>

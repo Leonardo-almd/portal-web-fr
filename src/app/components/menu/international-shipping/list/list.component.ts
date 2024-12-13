@@ -100,7 +100,6 @@ export class ListComponent implements OnInit {
     this.isLoading.set(true);
     this.service.get(this.filter()).subscribe({
       next: (res: any) => {
-        console.log(res)
         if (res) {
           if(this.filter().page == 1){
             this.tableItems.set(res.data);

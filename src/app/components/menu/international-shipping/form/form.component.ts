@@ -64,7 +64,6 @@ export class FormComponent {
     label: 'Salvar',
     action: async () => {
       const payload = this.form.value;
-      console.log(payload);
       await this.service
         .create(payload)
         .then(() => {
@@ -134,6 +133,10 @@ export class FormComponent {
     return this.form.get('freight_charges') as FormArray;
   }
 
+  get f() {
+    return this.form.controls;
+  }
+
   constructor(
     private fb: FormBuilder,
     private service: InternationalShippingService,
@@ -155,6 +158,10 @@ export class FormComponent {
       departure_date: [''],
       arrival_date: [''],
       return_deadline: [''],
+      demurrage_fee: [''],
+      due_date: [''],
+      invoice_name: [''],
+      demurrage_currency: ['BRL'],
       freight_charges: this.fb.array([]),
     });
     this.form.valueChanges.subscribe(() => {
@@ -225,7 +232,6 @@ export class FormComponent {
         const index = this.freightCharges.controls.findIndex(
           (control) => control.value.item === data.value.item
         );
-        console.log(index);
 
         if (index !== -1) {
           this.freightCharges.removeAt(index);

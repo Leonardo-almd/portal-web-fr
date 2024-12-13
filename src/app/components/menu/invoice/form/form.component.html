@@ -5,7 +5,7 @@
       <!--  [p-can-active-next-step]="canActiveNextStep.bind(this)" -->
       <po-step p-label="Dados" style="margin-bottom: 100px;" [p-can-active-next-step]="canActiveNextStep.bind(this)">
         <div class="po-row">
-          <po-combo class="po-md-6" p-label="Filial" p-placeholder="- selecione -" [p-filter-service]="branchService"
+          <po-combo [p-clean]="true" class="po-md-6" p-label="Filial" p-placeholder="- selecione -" [p-filter-service]="branchService"
             formControlName="branch"></po-combo>
           <po-datepicker class="po-md-6" p-label="Data" p-placeholder="Data da Invoice" formControlName="date">
           </po-datepicker>
