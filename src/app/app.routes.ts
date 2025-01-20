@@ -7,6 +7,7 @@ import { ListComponent as InternationalShippingListComponent } from './component
 import { ListComponent as BranchListComponent } from './components/registers/branches/list/list.component';
 import { ListComponent as ProcessListComponent } from './components/registers/process/list/list.component';
 import { ListComponent as CustomerListComponent } from './components/registers/customer/list/list.component';
+import { ListComponent as ExporterListComponent } from './components/registers/exporter/list/list.component';
 import { permissionGuard } from './guards/permission.guard';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 
@@ -28,6 +29,7 @@ export const routes: Routes = [
       { path: 'branch', component: BranchListComponent, data: { entity: 'branches' }, canActivate: [permissionGuard]},
       { path: 'process', component: ProcessListComponent, data: { entity: 'processes' }, canActivate: [permissionGuard]},
       { path: 'customer', component: CustomerListComponent, data: { entity: 'customers' }, canActivate: [permissionGuard]},
+      { path: 'exporter', component: ExporterListComponent, data: { entity: 'exporters' }, canActivate: [permissionGuard] },
     ]
   },
   {

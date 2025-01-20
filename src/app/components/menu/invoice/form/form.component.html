@@ -1,32 +1,59 @@
-<po-modal p-click-out="false" p-title="Nova Invoice" [p-primary-action]="primaryAction"
+<po-modal p-click-out="false" [p-title]="title" [p-primary-action]="primaryAction"
   [p-secondary-action]="secundaryAction">
   <form [formGroup]="form">
     <po-stepper >
       <!--  [p-can-active-next-step]="canActiveNextStep.bind(this)" -->
-      <po-step p-label="Dados" style="margin-bottom: 100px;" [p-can-active-next-step]="canActiveNextStep.bind(this)">
+      <po-step p-label="Informações" style="margin-bottom: 100px;" [p-can-active-next-step]="canActiveNextStep.bind(this)">
+      <po-divider p-label="Dados"></po-divider>
         <div class="po-row">
-          <po-combo [p-clean]="true" class="po-md-6" p-label="Filial" p-placeholder="- selecione -" [p-filter-service]="branchService"
-            formControlName="branch"></po-combo>
-          <po-datepicker class="po-md-6" p-label="Data" p-placeholder="Data da Invoice" formControlName="date">
+          <po-combo [p-clean]="true" class="po-md-6" p-label="Exportador" p-placeholder="- selecione -" [p-filter-service]="exporterService"
+            formControlName="exporter"></po-combo>
+          <po-combo [p-clean]="true" class="po-md-6" p-label="Cliente - Importador" p-placeholder="- selecione -" [p-filter-service]="customerService"
+            formControlName="import_customer"></po-combo>
+          <po-combo [p-clean]="true" class="po-md-6" p-label="Cliente - Comprador" p-placeholder="- selecione -" [p-filter-service]="customerService"
+            formControlName="buyer_customer" [p-optional]="true"></po-combo>
+          <po-input class="po-md-3" p-label="Número" p-placeholder="Número da invoice" formControlName="number"></po-input>
+          <po-datepicker class="po-md-4" p-label="Data" p-placeholder="Data da Invoice" formControlName="date">
           </po-datepicker>
-          <po-input
-              p-label="teste">
-          </po-input>>
+          <po-input class="po-md-3" p-label="De" p-placeholder="Lugar de origem" formControlName="from"></po-input>
+          <po-input class="po-md-3" p-label="Para" p-placeholder="Lugar de destino" formControlName="to"></po-input>
+          <po-input class="po-md-3" p-label="Modelo de Transporte" p-placeholder="Modelo de transporte" formControlName="model_transport"></po-input>
+          <po-input class="po-md-3" p-label="Tipo de Pacote" p-placeholder="Tipo de pacote" formControlName="kind_package"></po-input>
+          <po-input class="po-md-3" p-label="Pagamento" p-placeholder="Pagamento" formControlName="payment"></po-input>
+          <po-decimal class="po-md-2" p-label="Valor Frete" p-placeholder="Valor do frete" formControlName="shipping_value">
+          </po-decimal>
         </div>
-
+      <po-divider p-label="Banco"></po-divider>
+        <div class="po-row">
+          <po-input class="po-md-4" p-label="Nome Beneficiário" p-placeholder="Nome do beneficiário" formControlName="beneficiary_name"></po-input>
+          <po-input class="po-md-4" p-label="Endereço Beneficiário" p-placeholder="Endereço do beneficiário" formControlName="beneficiary_address"></po-input>
+          <po-input class="po-md-4" p-label="Banco Beneficiário" p-placeholder="Nome do banco do beneficiário" formControlName="bank_name"></po-input>
+          <po-input class="po-md-4" p-label="Número da Conta" p-placeholder="Número da conta do beneficiário" formControlName="account_number"></po-input>
+          <po-input class="po-md-4" p-label="Endereço Banco" p-placeholder="Endereço do banco" formControlName="bank_address"></po-input>
+          <po-input class="po-md-4" p-label="SWIFT" p-placeholder="SWIFT" formControlName="swift"></po-input>
+          <po-input class="po-md-4" p-label="Código Banco" p-placeholder="Código do banco" formControlName="bank_code"></po-input>
+        </div>
       </po-step>
-      <po-step p-label="Anexo">
-        <div class="po-row" style="display: flex; flex-direction: row; justify-content: center;">
-          <po-button (p-click)="fileInput.click()" p-label="Anexar Arquivo" style="margin-top: 30px;"></po-button>
-          <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept=".xlsx" />
-        </div>
-        @if(fileUpload){
-        <div class="po-row" style="display: flex; flex-direction: row; justify-content: center;">
-          <po-info p-label="Arquivo anexado" [p-value]="fileUpload.name + ' - ' + (fileUpload.size/1048576 | number: '1.2-2') + ' MB'"> </po-info>
-        </div>
+      @if(items.length < 1){
+        <po-step p-label="Anexo" >
+          <div class="po-row" style="display: flex; flex-direction: row; justify-content: center;">
+            <po-button (p-click)="fileInput.click()" p-label="Anexar Arquivo" style="margin-top: 30px;"></po-button>
+            <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept=".xlsx" />
+          </div>
+          @if(fileUpload){
+          <div class="po-row" style="display: flex; flex-direction: row; justify-content: center;">
+            <po-info p-label="Arquivo anexado" [p-value]="fileUpload.name + ' - ' + (fileUpload.size/1048576 | number: '1.2-2') + ' MB'"> </po-info>
+          </div>
 
-        }
-      </po-step>
+          }
+        </po-step>
+
+      } @else {
+        <po-step p-label="Produtos" style="margin-bottom: 100px;">
+          <po-table [p-hide-columns-manager]="true" [p-columns]="productsColumns" [p-items]="items"></po-table>
+
+        </po-step>
+      }
     </po-stepper>
   </form>
 

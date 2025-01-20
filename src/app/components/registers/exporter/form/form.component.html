@@ -1,0 +1,42 @@
+<po-modal p-click-out="false" p-size="lg" p-title="Novo Exportador" [p-primary-action]="primaryAction"
+  [p-secondary-action]="secundaryAction">
+  <form [formGroup]="form">
+    <po-divider p-label="Dados">
+    </po-divider>
+    <div class="po-row">
+      <po-input class="po-md-6" p-label="Nome" formControlName="name"></po-input>
+    </div>
+    <po-divider p-label="Endereço">
+    </po-divider>
+    <div class="po-row">
+      <po-input class="po-md-6" p-label="Logradouro" formControlName="address"></po-input>
+      <po-input class="po-md-4" p-label="Bairro" formControlName="neighborhood"></po-input>
+      <po-input class="po-md-3" p-label="Número" formControlName="number"></po-input>
+      <po-input class="po-md-3" p-label="Complemento" formControlName="complement"></po-input>
+      <po-input class="po-md-3" p-label="Cidade" formControlName="city"></po-input>
+      <po-input class="po-md-3" p-label="Estado" formControlName="state"></po-input>
+      <po-input class="po-md-3" p-label="País" formControlName="country"></po-input>
+    </div>
+    <po-divider p-label="Carimbo">
+    </po-divider>
+    <div class="po-row">
+      <po-button p-label="Escolher arquivo" (p-click)="triggerFileInput()" p-aria-label=""></po-button>
+      <input #fileInput accept="image/png" type="file" (change)="onFileChange($event)" style="display: none;" />
+    </div>
+    <div class="po-row">
+      <small style="color: gray;">Apenas arquivos PNG com até 1 MB são permitidos.</small>
+    </div>
+    @if(imagePreview){
+    <div class="po-row">
+      <img [src]="imagePreview" alt="Preview da Imagem"
+        style="max-width: 100%; max-height: 200px; margin-top: 8px; border: 1px dotted gray;" />
+    </div>
+    <div class="po-row">
+      <po-button [p-danger]="true" p-label="Remover arquivo" (p-click)="deleteStampFile()"
+        style="margin-top: 8px;"></po-button>
+    </div>
+    }
+
+
+  </form>
+</po-modal>

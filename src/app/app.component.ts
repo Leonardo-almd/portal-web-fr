@@ -37,7 +37,8 @@ export class AppComponent {
       { label: 'Usuários', shortLabel: 'Usuários', link: '/register/user' },
       { label: 'Filiais', shortLabel: 'Filiais', link: '/register/branch' },
       { label: 'Processos', shortLabel: 'Processos', link: '/register/process'},
-      { label: 'Clientes', shortLabel: 'Clientes', link: '/register/customer'}
+      { label: 'Clientes', shortLabel: 'Clientes', link: '/register/customer'},
+      { label: 'Exportadores', shortLabel: 'Exportadores', link: '/register/exporter'},
     ] },
     { label: 'Sair', icon: 'ph ph-sign-out', shortLabel: 'Sair', action: () => this.logout()}
   ];

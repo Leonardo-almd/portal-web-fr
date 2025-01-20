@@ -23,8 +23,9 @@ export class InvoiceService {
     return this.http.post(`${this.baseUrl}/invoices`, payload)
   }
 
-  exportInvoice(id: any){
+  exportInvoice(id: any, model: string){
     return this.http.get(`${this.baseUrl}/invoices/${id}/export`, {
+      params: { model },
       responseType: 'blob' as 'json'
     })
   }
