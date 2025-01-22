@@ -46,6 +46,8 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<any> {
     try {
+      email = email.trim();
+      password = password.trim();
       const body = { email, password };
       this.http
         .post(`${this.baseUrl}/auth/login`, body)
@@ -57,6 +59,9 @@ export class AuthService {
             this.router.navigate(['/menu/invoice']);
           },
           error: (err) => {
+            if(err.error.statusCode === 401){
+              this.poNotification.error('Usuário ou senha inválidos');
+            }
             console.error('Error logging in:', err);
           },
         });
