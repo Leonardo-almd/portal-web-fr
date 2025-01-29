@@ -1,6 +1,7 @@
 import { from } from 'rxjs';
 import { Component, ViewChild } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormGroup,
   FormsModule,
@@ -9,9 +10,11 @@ import {
 } from '@angular/forms';
 import {
   PoButtonModule,
+  PoDialogService,
   PoDividerModule,
   PoFieldModule,
   PoInfoModule,
+  PoListViewAction,
   PoModalAction,
   PoModalComponent,
   PoModalModule,
@@ -44,7 +47,7 @@ import { CustomerService } from '../../../../services/customer.service';
     PoButtonModule,
     PoInfoModule,
     CommonModule,
-    PoTableModule
+    PoTableModule,
   ],
   templateUrl: './form.component.html',
   styleUrl: './form.component.scss',
@@ -58,7 +61,7 @@ export class FormComponent {
   fileUpload: any;
   orientation: PoStepperOrientation = PoStepperOrientation.Vertical;
   items = [];
-  title = 'Nova Invoice'
+  title = 'Nova Invoice';
   editMode = false;
 
   readonly primaryAction: PoModalAction = {
@@ -66,7 +69,7 @@ export class FormComponent {
     action: async () => {
       let payload;
       const formData = new FormData();
-      if(!this.editMode){
+      if (!this.editMode) {
         const formData = new FormData();
         formData.append('file', this.fileUpload, this.fileUpload.name);
         for (const key in this.form.value) {
@@ -79,17 +82,17 @@ export class FormComponent {
         payload = this.form.value;
       }
       this.service.createInvoice(payload).subscribe({
-        next: res => {
+        next: (res) => {
           this.poModal.close();
           this.callback();
           this.poNotification.success('Invoice criada com sucesso');
         },
-        error: err => {
+        error: (err) => {
           this.poNotification.error(`Erro ao criar invoice: ${err}`);
-        }
-      })
+        },
+      });
     },
-    disabled: true
+    disabled: true,
   };
 
   readonly secundaryAction: PoModalAction = {
@@ -97,36 +100,69 @@ export class FormComponent {
     action: () => {
       this.callback();
       this.poModal.close();
-    }
+    },
   };
 
   readonly productsColumns: PoTableColumn[] = [
-  {
-    label: 'Descrição',
-    property: 'desc'
-  },
-  {
-    label: 'Referência',
-    property: 'ref'
-  },
-  {
-    label: 'Quantidade',
-    property: 'qtd'
-  },
-  {
-    label: 'Valor Unitário',
-    property: 'unit',
-    type: 'currency',
-    format: 'BRL'
+    {
+      label: 'Descrição',
+      property: 'desc',
+    },
+    {
+      label: 'Referência',
+      property: 'ref',
+    },
+    {
+      label: 'Unidade de Medida',
+      property: 'um',
+    },
+    {
+      label: 'Quantidade',
+      property: 'qtd',
+    },
+    {
+      label: 'Valor Unitário',
+      property: 'unit',
+      type: 'currency',
+      format: 'BRL',
+    },
+  ];
+
+  readonly tableActions: Array<PoListViewAction> = [
+    {
+      label: '',
+      type: 'danger',
+      icon: 'po-icon-delete',
+      action: this.onRemoveBankData.bind(this),
+    },
+  ];
+
+  readonly columns: Array<PoTableColumn> = [
+    {
+      property: 'header',
+      label: 'Cabeçalho',
+      type: 'cellTemplate',
+      width: '200px'
+    },
+    {
+      property: 'desc',
+      label: 'Descrição',
+      type: 'cellTemplate',
+      width: '350px',
+    }
+  ];
+
+  get bankData(): FormArray {
+    return this.form.get('bank_data') as FormArray;
   }
-]
 
   constructor(
     private fb: FormBuilder,
     private service: InvoiceService,
     private poNotification: PoNotificationService,
     public exporterService: ExporterService,
-    public customerService: CustomerService
+    public customerService: CustomerService,
+    private poAlert: PoDialogService
   ) {
     this.form = this.fb.group({
       id: [null],
@@ -141,23 +177,17 @@ export class FormComponent {
       kind_package: ['', Validators.required],
       payment: ['', Validators.required],
       shipping_value: [0.0, Validators.required],
-      beneficiary_name: ['', Validators.required],
-      beneficiary_address: ['', Validators.required],
-      bank_name: ['', Validators.required],
-      bank_address: ['', Validators.required],
-      account_number: ['', Validators.required],
-      swift: ['', Validators.required],
-      bank_code: ['', Validators.required],
       total: [0.0],
-      subtotal: [0.0]
+      subtotal: [0.0],
+      bank_data: this.fb.array([]),
     });
     this.form.valueChanges.subscribe((ev) => {
-      if(this.editMode){
+      if (this.editMode) {
         this.primaryAction.disabled = this.form.invalid;
       } else {
         this.primaryAction.disabled = this.form.invalid || !this.fileUpload;
       }
-    })
+    });
     this.poNotification.setDefaultDuration(2500);
   }
 
@@ -165,12 +195,25 @@ export class FormComponent {
     if (row) {
       this.title = 'Editar Invoice';
       const data = row;
-      console.log(data.items)
       this.items = data.items;
       this.editMode = true;
       data.exporter = data.exporter?.id.toString();
       data.import_customer = data.import_customer?.id.toString();
       data.buyer_customer = data.buyer_customer?.id.toString();
+
+      this.bankData.clear();
+
+      if (data.bank_data && Array.isArray(data.bank_data)) {
+        data.bank_data.forEach((data: any) => {
+          this.bankData.push(
+            this.fb.group({
+              desc: [data.desc || null, Validators.required],
+              header: [data.header || null],
+              item: [data.item || null],
+            })
+          );
+        });
+      }
 
       this.form.patchValue(data);
     }
@@ -192,5 +235,54 @@ export class FormComponent {
       this.fileUpload = file;
       this.primaryAction.disabled = false;
     }
+  }
+
+  downloadModel() {
+    this.service.downloadModelInvoice().subscribe({
+      next: (res: any) => {
+        const url = window.URL.createObjectURL(res);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `modelo-invoice.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+    });
+  }
+
+  addBankData(): void {
+    let lastItem: any;
+    if (this.bankData.length > 0)
+      lastItem =
+        this.bankData.controls[this.bankData.controls.length - 1];
+    const item =
+      this.bankData.controls.length == 0 ? 1 : lastItem!.value.item + 1;
+    const dataGroup = this.fb.group({
+      item: [item],
+      desc: [null, Validators.required],
+      header: [null]
+    });
+    this.bankData.push(dataGroup);
+  }
+
+  onRemoveBankData(data: any): void {
+    this.poAlert.confirm({
+      literals: { cancel: 'Não', confirm: 'Sim' },
+      title: 'Remover',
+      message: 'Deseja realmente remover?',
+      confirm: () => {
+        const index = this.bankData.controls.findIndex(
+          (control) => control.value.item === data.value.item
+        );
+
+        if (index !== -1) {
+          this.bankData.removeAt(index);
+        }
+      },
+    });
   }
 }

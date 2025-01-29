@@ -4,34 +4,40 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InvoiceService {
   private baseUrl = environment.baseUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getInvoices(filter: any) {
     filter = new HttpParams({
       fromObject: filter,
     });
-    const result = this.http.get(`${this.baseUrl}/invoices?${filter}`)
-    return result
+    const result = this.http.get(`${this.baseUrl}/invoices?${filter}`);
+    return result;
   }
 
-  createInvoice(payload: any){
-    return this.http.post(`${this.baseUrl}/invoices`, payload)
+  createInvoice(payload: any) {
+    return this.http.post(`${this.baseUrl}/invoices`, payload);
   }
 
-  exportInvoice(id: any, model: string){
+  exportInvoice(id: any, model: string) {
     return this.http.get(`${this.baseUrl}/invoices/${id}/export`, {
       params: { model },
-      responseType: 'blob' as 'json'
-    })
+      responseType: 'blob' as 'json',
+    });
   }
 
   delete(id: string): Promise<any> {
-    const result = this.http.delete(`${this.baseUrl}/invoices/${id}`)
-    return firstValueFrom(result)
+    const result = this.http.delete(`${this.baseUrl}/invoices/${id}`);
+    return firstValueFrom(result);
+  }
+
+  downloadModelInvoice() {
+    return this.http.get(`${this.baseUrl}/invoices/download-model`, {
+      responseType: 'blob' as 'json', // Retorna o arquivo como Blob
+    });
   }
 }
